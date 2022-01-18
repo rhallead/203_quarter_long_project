@@ -26,4 +26,9 @@ public final class Point
         result = result * 31 + y;
         return result;
     }
+
+    public void shift(Viewport viewport, int col, int row) {
+        viewport.col = col;
+        viewport.row = row;
+    }
 }

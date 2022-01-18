@@ -22,4 +22,13 @@ public final class WorldView
         this.tileHeight = tileHeight;
         this.viewport = new Viewport(numRows, numCols);
     }
+
+    public void shiftView(int colDelta, int rowDelta) {
+        int newCol = Functions.clamp(this.viewport.col + colDelta, 0,
+                this.world.numCols - this.viewport.numCols);
+        int newRow = Functions.clamp(this.viewport.row + rowDelta, 0,
+                this.world.numRows - this.viewport.numRows);
+
+        this.viewport.viewportToWorld(viewport.col, viewport.row).shift(this.viewport, newCol, newRow);
+    }
 }

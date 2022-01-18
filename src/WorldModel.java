@@ -26,4 +26,20 @@ public final class WorldModel
             Arrays.fill(this.background[row], defaultBackground);
         }
     }
+
+    public boolean withinBounds(Point pos) {
+        return pos.y >= 0 && pos.y < this.numRows && pos.x >= 0
+                && pos.x < this.numCols;
+    }
+
+    /*
+       Assumes that there is no entity currently occupying the
+       intended destination cell.
+    */
+    public void addEntity(Entity entity) {
+        if (this.withinBounds(entity.position)) {
+            Functions.setOccupancyCell(this, entity.position, entity);
+            this.entities.add(entity);
+        }
+    }
 }
