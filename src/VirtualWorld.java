@@ -72,31 +72,32 @@ public final class VirtualWorld extends PApplet
     public void draw() {
         long time = System.currentTimeMillis();
         if (time >= nextTime) {
-            Functions.updateOnTime(this.scheduler, time);
+            this.scheduler.updateOnTime(time);
             nextTime = time + TIMER_ACTION_PERIOD;
         }
 
-        Functions.drawViewport(view);
+        view.drawViewport();
     }
 
     // Just for debugging and for P5
     public void mousePressed() {
         Point pressed = mouseToPoint(mouseX, mouseY);
-        System.out.println("CLICK! " + pressed.x + ", " + pressed.y);
+        System.out.println("CLICK! " + pressed.getX() + ", " + pressed.getY());
 
-        Optional<Entity> entityOptional = Functions.getOccupant(world, pressed);
+        Optional<Entity> entityOptional = world.getOccupant(pressed);
         if (entityOptional.isPresent())
         {
             Entity entity = entityOptional.get();
-            System.out.println(entity.id + ": " + entity.kind + " : " + entity.health);
+            System.out.println(entity.getId() + ": " + entity.getKind() + " : " + entity.getHealth());
         }
 
     }
 
     private Point mouseToPoint(int x, int y)
     {
-        return view.viewport.viewportToWorld(mouseX/TILE_WIDTH, mouseY/TILE_HEIGHT);
+        return view.getViewport().viewportToWorld(mouseX/TILE_WIDTH, mouseY/TILE_HEIGHT);
     }
+
     public void keyPressed() {
         if (key == CODED) {
             int dx = 0;
@@ -122,8 +123,7 @@ public final class VirtualWorld extends PApplet
 
     public static Background createDefaultBackground(ImageStore imageStore) {
         return new Background(DEFAULT_IMAGE_NAME,
-                              Functions.getImageList(imageStore,
-                                                     DEFAULT_IMAGE_NAME));
+                              imageStore.getImageList(DEFAULT_IMAGE_NAME));
     }
 
     public static PImage createImageColored(int width, int height, int color) {
@@ -163,7 +163,7 @@ public final class VirtualWorld extends PApplet
     public static void scheduleActions(
             WorldModel world, EventScheduler scheduler, ImageStore imageStore)
     {
-        for (Entity entity : world.entities) {
+        for (Entity entity : world.getEntities()) {
             entity.scheduleActions(scheduler, world, imageStore);
         }
     }

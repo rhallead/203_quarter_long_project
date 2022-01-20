@@ -3,11 +3,11 @@
  */
 public final class Action
 {
-    public ActionKind kind;
-    public Entity entity;
-    public WorldModel world;
-    public ImageStore imageStore;
-    public int repeatCount;
+    private ActionKind kind;
+    private Entity entity;
+    private WorldModel world;
+    private ImageStore imageStore;
+    private int repeatCount;
 
     public Action(
             ActionKind kind,
@@ -24,14 +24,64 @@ public final class Action
     }
 
     public void executeAction(EventScheduler scheduler) {
-        switch (this.kind) {
+        switch (kind) {
             case ACTIVITY:
-                Functions.executeActivityAction(this, scheduler);
+                executeActivityAction(scheduler);
                 break;
 
             case ANIMATION:
-                Functions.executeAnimationAction(this, scheduler);
+                executeAnimationAction(scheduler);
                 break;
+        }
+    }
+
+    private void executeAnimationAction(
+            EventScheduler scheduler)
+    {
+        entity.nextImage();
+
+        if (repeatCount != 1) {
+            scheduler.scheduleEvent(entity,
+                    Functions.createAnimationAction(entity,
+                            Math.max(repeatCount - 1,
+                                    0)),
+                    entity.getAnimationPeriod());
+        }
+    }
+
+    private void executeActivityAction(
+            EventScheduler scheduler)
+    {
+        switch (entity.getKind()) {
+            case SAPLING:
+                entity.executeSaplingActivity(world,
+                        imageStore, scheduler);
+                break;
+
+            case TREE:
+                entity.executeTreeActivity(world,
+                        imageStore, scheduler);
+                break;
+
+            case FAIRY:
+                entity.executeFairyActivity(world,
+                        imageStore, scheduler);
+                break;
+
+            case DUDE_NOT_FULL:
+                entity.executeDudeNotFullActivity(world,
+                        imageStore, scheduler);
+                break;
+
+            case DUDE_FULL:
+                entity.executeDudeFullActivity(world,
+                        imageStore, scheduler);
+                break;
+
+            default:
+                throw new UnsupportedOperationException(String.format(
+                        "executeActivityAction not supported for %s",
+                        entity.getKind()));
         }
     }
 }

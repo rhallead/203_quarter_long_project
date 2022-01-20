@@ -7,9 +7,17 @@ import processing.core.PImage;
  */
 public final class Background
 {
-    public String id;
-    public List<PImage> images;
-    public int imageIndex;
+    private String id;
+    private List<PImage> images;
+    private int imageIndex;
+
+    public List<PImage> getImages() {
+        return images;
+    }
+
+    public int getImageIndex() {
+        return imageIndex;
+    }
 
     public Background(String id, List<PImage> images) {
         this.id = id;
@@ -22,7 +30,7 @@ public final class Background
                     ((Background)entity).imageIndex);
         }
         else if (entity instanceof Entity) {
-            return ((Entity)entity).images.get(((Entity)entity).imageIndex);
+            return ((Entity)entity).getImages().get(((Entity)entity).getImageIndex());
         }
         else {
             throw new UnsupportedOperationException(

@@ -3,8 +3,16 @@
  */
 public final class Point
 {
-    public final int x;
-    public final int y;
+    private final int x;
+    private final int y;
+
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
+    }
 
     public Point(int x, int y) {
         this.x = x;
@@ -28,7 +36,7 @@ public final class Point
     }
 
     public void shift(Viewport viewport, int col, int row) {
-        viewport.col = col;
-        viewport.row = row;
+        viewport.setCol(col);
+        viewport.setRow(row);
     }
 }
