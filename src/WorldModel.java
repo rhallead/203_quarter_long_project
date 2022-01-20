@@ -45,8 +45,8 @@ public final class WorldModel
     }
 
     private boolean withinBounds(Point pos) {
-        return pos.getY() >= 0 && pos.getY() < this.numRows && pos.getX() >= 0
-                && pos.getX() < this.numCols;
+        return pos.y >= 0 && pos.y < this.numRows && pos.x >= 0
+                && pos.x < this.numCols;
     }
 
     /*
@@ -73,11 +73,11 @@ public final class WorldModel
     private void setBackgroundCell(
             Point pos, Background background)
     {
-        this.background[pos.getY()][pos.getX()] = background;
+        this.background[pos.y][pos.x] = background;
     }
 
     private Background getBackgroundCell(Point pos) {
-        return this.background[pos.getY()][pos.getX()];
+        return this.background[pos.y][pos.x];
     }
 
     public Optional<PImage> getBackgroundImage(
@@ -113,13 +113,13 @@ public final class WorldModel
     }
 
     public Entity getOccupancyCell(Point pos) {
-        return this.occupancy[pos.getY()][pos.getX()];
+        return this.occupancy[pos.y][pos.x];
     }
 
     private void setOccupancyCell(
             Point pos, Entity entity)
     {
-        this.occupancy[pos.getY()][pos.getX()] = entity;
+        this.occupancy[pos.y][pos.x] = entity;
     }
 
     public void removeEntity(Entity entity) {

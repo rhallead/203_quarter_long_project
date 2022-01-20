@@ -87,8 +87,8 @@ public final class Functions
     public static final int TREE_HEALTH_MIN = 1;
 
     public static boolean adjacent(Point p1, Point p2) {
-        return (p1.getX() == p2.getX() && Math.abs(p1.getY() - p2.getY()) == 1) || (p1.getY() == p2.getY()
-                && Math.abs(p1.getX() - p2.getX()) == 1);
+        return (p1.x == p2.x && Math.abs(p1.y - p2.y) == 1) || (p1.y == p2.y
+                && Math.abs(p1.x - p2.x) == 1);
     }
 
     public static int getNumFromRange(int max, int min)
@@ -353,8 +353,8 @@ public final class Functions
     }
 
     public static int distanceSquared(Point p1, Point p2) {
-        int deltaX = p1.getX() - p2.getX();
-        int deltaY = p1.getY() - p2.getY();
+        int deltaX = p1.x - p2.x;
+        int deltaY = p1.y - p2.y;
 
         return deltaX * deltaX + deltaY * deltaY;
     }
