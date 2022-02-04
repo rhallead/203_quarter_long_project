@@ -1,0 +1,26 @@
+I kept the math methods in the Functions class because multiple classes 
+        move them and they didn't particularly fit into a specific class.
+        
+I kept the parse/process/load methods in the Functions class 
+        because they are not directly related to WorldModel since its reading in from a file.
+        
+All the reasons for adding the methods I picked into the entity class is because that 
+        method depended on the Entity the most. It used the Entity instance 
+        variables the most and it made the most sense to put it there.
+        For example, I moved getCurrentImage() and getAnimationPeriod() because those
+        were highly dependent on the Entity being passed into the class. So putting it in 
+        the Entity class made the most sense.
+        
+I moved the draw functions into WorldView because those are drawing things into the whole
+        world and not just viewport. Also the main Paramater being used was the Worldview parameter
+        
+I moved a lot of functions into WorldModel because they were setting up how the world looked or they 
+        were moving something around in the world. These all belong in WorldModel because this class keep track
+        of what the world looks like and sets everything up. On top of that, I put findNearest into WorldModel
+        for similar reasons. This method was the hardest for me to move because there felt like there was no 
+        correct answer. But in terms of the future, WorldModel seemed like the best fit.
+
+The methods I moved to Action and Event seemed relatively obvious because of the parameters.
+
+I kept nearestEntity and getImages in Functions because those are accessed between multiple different classes 
+        so keeping them in Functions made the most sense because there was no true answer based on parameters either.
