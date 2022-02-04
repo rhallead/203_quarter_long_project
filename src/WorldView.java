@@ -36,7 +36,7 @@ public final class WorldView
         int newRow = Functions.clamp(this.viewport.getRow() + rowDelta, 0,
                 this.world.getNumRows() - this.viewport.getNumRows());
 
-        this.viewport.viewportToWorld(viewport.getCol(), viewport.getRow()).shift(this.viewport, newCol, newRow);
+        this.viewport.shift(newCol, newRow);
     }
 
     public void drawViewport() {
@@ -50,7 +50,7 @@ public final class WorldView
 
             if (viewport.contains(pos)) {
                 Point viewPoint = viewport.worldToViewport(pos.x, pos.y);
-                screen.image(entity.getCurrentImage(entity),
+                screen.image(entity.getCurrentImage(),
                         viewPoint.x * tileWidth,
                         viewPoint.y * tileHeight);
             }

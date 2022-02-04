@@ -1,11 +1,27 @@
-import java.util.*;
-
 import processing.core.PImage;
 
-/**
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
+
+public interface Entity {
+    String getId();
+    Point getPosition();
+    void setPosition(Point position);
+    PImage getCurrentImage();
+}
+
+
+
+/*import java.util.*;
+
+        import processing.core.PImage;
+
+
  * An entity that exists in the world. See EntityKind for the
  * different kinds of entities that exist.
- */
+
 public final class Entity
 {
     private EntityKind kind;
@@ -304,19 +320,8 @@ public final class Entity
         }
     }
 
-    public PImage getCurrentImage(Object entity) {
-        if (entity instanceof Background) {
-            return ((Background)entity).getImages().get(
-                    ((Background)entity).getImageIndex());
-        }
-        else if (entity instanceof Entity) {
-            return ((Entity)entity).images.get(((Entity)entity).imageIndex);
-        }
-        else {
-            throw new UnsupportedOperationException(
-                    String.format("getCurrentImage not supported for %s",
-                            entity));
-        }
+    public PImage getCurrentImage() {
+        return images.get(imageIndex);
     }
 
     public int getAnimationPeriod() {
@@ -340,8 +345,8 @@ public final class Entity
     }
 
     private boolean transformPlant( WorldModel world,
-                                   EventScheduler scheduler,
-                                   ImageStore imageStore)
+                                    EventScheduler scheduler,
+                                    ImageStore imageStore)
     {
         if (kind == EntityKind.TREE)
         {
@@ -492,3 +497,4 @@ public final class Entity
         }
     }
 }
+*/

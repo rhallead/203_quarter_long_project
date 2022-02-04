@@ -21,14 +21,6 @@ public final class Viewport
         return numCols;
     }
 
-    public void setRow(int row) {
-        this.row = row;
-    }
-
-    public void setCol(int col) {
-        this.col = col;
-    }
-
     public Viewport(int numRows, int numCols) {
         this.numRows = numRows;
         this.numCols = numCols;
@@ -45,5 +37,10 @@ public final class Viewport
 
     public Point worldToViewport(int col, int row) {
         return new Point(col - this.col, row - this.row);
+    }
+
+    public void shift(int col, int row) {
+        this.col = col;
+        this.row = row;
     }
 }

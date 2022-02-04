@@ -84,7 +84,7 @@ public final class WorldModel
             Point pos)
     {
         if (withinBounds(pos)) {
-            return Optional.of(getBackgroundCell(pos).getCurrentImage(getBackgroundCell(pos)));
+            return Optional.of(getBackgroundCell(pos).getCurrentImage());
         }
         else {
             return Optional.empty();
@@ -149,13 +149,13 @@ public final class WorldModel
     }
 
     public Optional<Entity> findNearest(
-            Point pos, List<EntityKind> kinds)
+            Point pos, List<Class> classes)
     {
         List<Entity> ofType = new LinkedList<>();
-        for (EntityKind kind: kinds)
+        for (Class clas: classes)
         {
             for (Entity entity : entities) {
-                if (entity.getKind() == kind) {
+                if (entity.getClass() == clas) {
                     ofType.add(entity);
                 }
             }
