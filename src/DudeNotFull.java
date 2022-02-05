@@ -5,7 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-public class DudeNotFull implements AnimationEntity {
+public class DudeNotFull implements AnimationEntity, ActivityEntity {
 
     private String id;
     private Point position;
@@ -65,7 +65,7 @@ public class DudeNotFull implements AnimationEntity {
                 || !transformNotFull(world, scheduler, imageStore))
         {
             scheduler.scheduleEvent(this,
-                    Functions.createActivityAction(this, world, imageStore),
+                    Factory.createActivityAction(this, world, imageStore),
                     actionPeriod);
         }
     }
@@ -76,7 +76,7 @@ public class DudeNotFull implements AnimationEntity {
             ImageStore imageStore)
     {
         if (resourceCount >= resourceLimit) {
-            DudeFull miner = Functions.createDudeFull(id,
+            DudeFull miner = Factory.createDudeFull(id,
                     position, actionPeriod,
                     animationPeriod,
                     resourceLimit,
@@ -118,10 +118,10 @@ public class DudeNotFull implements AnimationEntity {
             ImageStore imageStore)
     {
                 scheduler.scheduleEvent(this,
-                        Functions.createActivityAction(this, world, imageStore),
+                        Factory.createActivityAction(this, world, imageStore),
                         actionPeriod);
                 scheduler.scheduleEvent(this,
-                        Functions.createAnimationAction(this, 0),
+                        Factory.createAnimationAction(this, 0),
                         getAnimationPeriod());
     }
 

@@ -1,7 +1,7 @@
 import processing.core.PImage;
 import java.util.List;
 
-public class Tree implements AnimationEntity, Plant {
+public class Tree implements Plant {
 
     private String id;
     private Point position;
@@ -61,7 +61,7 @@ public class Tree implements AnimationEntity, Plant {
         if (!transformPlant(world, scheduler, imageStore)) {
 
             scheduler.scheduleEvent(this,
-                    Functions.createActivityAction(this, world, imageStore),
+                    Factory.createActivityAction(this, world, imageStore),
                     actionPeriod);
         }
     }
@@ -72,10 +72,10 @@ public class Tree implements AnimationEntity, Plant {
             ImageStore imageStore)
     {
                 scheduler.scheduleEvent(this,
-                        Functions.createActivityAction(this, world, imageStore),
+                        Factory.createActivityAction(this, world, imageStore),
                         actionPeriod);
                 scheduler.scheduleEvent(this,
-                        Functions.createAnimationAction(this, 0),
+                        Factory.createAnimationAction(this, 0),
                         getAnimationPeriod());
     }
 
@@ -97,7 +97,7 @@ public class Tree implements AnimationEntity, Plant {
             ImageStore imageStore)
     {
         if (health <= 0) {
-            Entity stump = Functions.createStump(id,
+            Entity stump = Factory.createStump(id,
                     position,
                     imageStore.getImageList(Functions.STUMP_KEY));
 

@@ -5,7 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-public class Fairy implements AnimationEntity {
+public class Fairy implements AnimationEntity, ActivityEntity {
 
     private String id;
     private Point position;
@@ -57,7 +57,7 @@ public class Fairy implements AnimationEntity {
             Point tgtPos = fairyTarget.get().getPosition();
 
             if (this.moveToFairy(world, fairyTarget.get(), scheduler)) {
-                Sapling sapling = Functions.createSapling("sapling_" + id, tgtPos,
+                Sapling sapling = Factory.createSapling("sapling_" + id, tgtPos,
                         imageStore.getImageList(Functions.SAPLING_KEY));
 
                 world.addEntity(sapling);
@@ -66,7 +66,7 @@ public class Fairy implements AnimationEntity {
         }
 
         scheduler.scheduleEvent(this,
-                Functions.createActivityAction(this, world, imageStore),
+                Factory.createActivityAction(this, world, imageStore),
                 actionPeriod);
     }
 
@@ -94,10 +94,10 @@ public class Fairy implements AnimationEntity {
             ImageStore imageStore)
     {
                 scheduler.scheduleEvent(this,
-                        Functions.createActivityAction(this, world, imageStore),
+                        Factory.createActivityAction(this, world, imageStore),
                         actionPeriod);
                 scheduler.scheduleEvent(this,
-                        Functions.createAnimationAction(this, 0),
+                        Factory.createAnimationAction(this, 0),
                         getAnimationPeriod());
     }
 

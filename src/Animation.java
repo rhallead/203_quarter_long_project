@@ -11,11 +11,11 @@ public class Animation implements Action{
     }
 
     public void executeAction(EventScheduler scheduler) {
-        this.entity.nextImage();
+        entity.nextImage();
 
         if (repeatCount != 1) {
             scheduler.scheduleEvent(entity,
-                    Functions.createAnimationAction(entity,
+                    Factory.createAnimationAction(entity,
                             Math.max(repeatCount - 1,
                                     0)),
                     entity.getAnimationPeriod());

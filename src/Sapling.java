@@ -1,7 +1,7 @@
 import processing.core.PImage;
 import java.util.List;
 
-public class Sapling implements AnimationEntity, Plant {
+public class Sapling implements Plant {
 
     private String id;
     private Point position;
@@ -61,7 +61,7 @@ public class Sapling implements AnimationEntity, Plant {
         if (!transformPlant(world, scheduler, imageStore))
         {
             scheduler.scheduleEvent(this,
-                    Functions.createActivityAction(this, world, imageStore),
+                    Factory.createActivityAction(this, world, imageStore),
                     actionPeriod);
         }
     }
@@ -72,10 +72,10 @@ public class Sapling implements AnimationEntity, Plant {
             ImageStore imageStore)
     {
                 scheduler.scheduleEvent(this,
-                        Functions.createActivityAction(this, world, imageStore),
+                        Factory.createActivityAction(this, world, imageStore),
                         actionPeriod);
                 scheduler.scheduleEvent(this,
-                        Functions.createAnimationAction(this, 0),
+                        Factory.createAnimationAction(this, 0),
                         getAnimationPeriod());
     }
 
@@ -97,7 +97,7 @@ public class Sapling implements AnimationEntity, Plant {
             ImageStore imageStore)
     {
         if (health <= 0) {
-            Stump stump = Functions.createStump(id,
+            Stump stump = Factory.createStump(id,
                     position,
                     imageStore.getImageList(Functions.STUMP_KEY));
 
@@ -111,7 +111,7 @@ public class Sapling implements AnimationEntity, Plant {
         }
         else if (health >= healthLimit)
         {
-            Tree tree = Functions.createTree("tree_" + id,
+            Tree tree = Factory.createTree("tree_" + id,
                     position,
                     Functions.getNumFromRange(Functions.TREE_ACTION_MAX, Functions.TREE_ACTION_MIN),
                     Functions.getNumFromRange(Functions.TREE_ANIMATION_MAX, Functions.TREE_ANIMATION_MIN),
