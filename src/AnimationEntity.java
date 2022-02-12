@@ -1,7 +1,24 @@
-public interface AnimationEntity extends Entity{
-    void scheduleActions(EventScheduler scheduler,
-                         WorldModel world,
-                         ImageStore imageStore);
-    int getAnimationPeriod();
-    void nextImage();
+import processing.core.PImage;
+
+import java.util.List;
+
+public abstract class AnimationEntity extends Entity{
+    private int animationPeriod;
+
+    public AnimationEntity(String id,
+                           Point position,
+                           List<PImage> images,
+                           int imageIndex,
+                           int animationPeriod)
+    {
+        super(id, position, images, imageIndex);
+        this.animationPeriod = animationPeriod;
+    }
+
+    public int getAnimationPeriod()
+    {
+        return animationPeriod;
+    }
+
+    protected abstract void scheduleActions(EventScheduler scheduler, WorldModel world, ImageStore imageStore);
 }

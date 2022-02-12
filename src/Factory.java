@@ -26,7 +26,7 @@ public class Factory {
     public static Obstacle createObstacle(
             String id, Point position, int animationPeriod, List<PImage> images)
     {
-        return new Obstacle(id, position, images,
+        return new Obstacle(id, position, images, 0,
                 animationPeriod);
     }
 
@@ -92,7 +92,7 @@ public class Factory {
             int animationPeriod,
             int resourceLimit,
             List<PImage> images) {
-        return new DudeFull(id, position, images, resourceLimit, 0,
+        return new DudeFull(id, position, images, resourceLimit,
                 actionPeriod, animationPeriod);
     }
 }

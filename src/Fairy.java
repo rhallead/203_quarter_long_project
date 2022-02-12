@@ -5,30 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-public class Fairy implements AnimationEntity, ActivityEntity {
-
-    private String id;
-    private Point position;
-    private List<PImage> images;
-    private int imageIndex;
-    private int actionPeriod;
-    private int animationPeriod;
-
-    public String getId() {
-        return id;
-    }
-
-    public Point getPosition() {
-        return position;
-    }
-
-    public void setPosition(Point position) {
-        this.position = position;
-    }
-
-    public List<PImage> getImages() {
-        return images;
-    }
+public class Fairy extends ActivityEntity {
 
     public Fairy(
             String id,
@@ -37,12 +14,7 @@ public class Fairy implements AnimationEntity, ActivityEntity {
             int actionPeriod,
             int animationPeriod)
     {
-        this.id = id;
-        this.position = position;
-        this.images = images;
-        this.imageIndex = 0;
-        this.actionPeriod = actionPeriod;
-        this.animationPeriod = animationPeriod;
+        super(id, position, images, 0, animationPeriod, actionPeriod);
     }
 
     public void executeActivity(
@@ -51,13 +23,13 @@ public class Fairy implements AnimationEntity, ActivityEntity {
             EventScheduler scheduler)
     {
         Optional<Entity> fairyTarget =
-                world.findNearest(position, new ArrayList<>(Arrays.asList(Stump.class)));
+                world.findNearest(super.getPosition(), new ArrayList<>(Arrays.asList(Stump.class)));
 
         if (fairyTarget.isPresent()) {
             Point tgtPos = fairyTarget.get().getPosition();
 
             if (this.moveToFairy(world, fairyTarget.get(), scheduler)) {
-                Sapling sapling = Factory.createSapling("sapling_" + id, tgtPos,
+                Sapling sapling = Factory.createSapling("sapling_" + super.getId(), tgtPos,
                         imageStore.getImageList(Functions.SAPLING_KEY));
 
                 world.addEntity(sapling);
@@ -67,50 +39,25 @@ public class Fairy implements AnimationEntity, ActivityEntity {
 
         scheduler.scheduleEvent(this,
                 Factory.createActivityAction(this, world, imageStore),
-                actionPeriod);
+                super.getActionPeriod());
     }
 
-    private Point nextPositionFairy(
+    private Point nextPosition(
             WorldModel world, Point destPos)
     {
-        int horiz = Integer.signum(destPos.x - position.x);
-        Point newPos = new Point(position.x + horiz, position.y);
+        int horiz = Integer.signum(destPos.x - super.getPosition().x);
+        Point newPos = new Point(super.getPosition().x + horiz, super.getPosition().y);
 
         if (horiz == 0 || world.isOccupied(newPos)) {
-            int vert = Integer.signum(destPos.y - position.y);
-            newPos = new Point(position.x, position.y + vert);
+            int vert = Integer.signum(destPos.y - super.getPosition().y);
+            newPos = new Point(super.getPosition().x, super.getPosition().y + vert);
 
             if (vert == 0 || world.isOccupied(newPos)) {
-                newPos = position;
+                newPos = super.getPosition();
             }
         }
 
         return newPos;
-    }
-
-    public void scheduleActions(
-            EventScheduler scheduler,
-            WorldModel world,
-            ImageStore imageStore)
-    {
-                scheduler.scheduleEvent(this,
-                        Factory.createActivityAction(this, world, imageStore),
-                        actionPeriod);
-                scheduler.scheduleEvent(this,
-                        Factory.createAnimationAction(this, 0),
-                        getAnimationPeriod());
-    }
-
-    public PImage getCurrentImage() {
-        return images.get(imageIndex);
-    }
-
-    public int getAnimationPeriod() {
-        return animationPeriod;
-    }
-
-    public void nextImage() {
-        imageIndex = (imageIndex + 1) % images.size();
     }
 
     private boolean moveToFairy(
@@ -118,15 +65,15 @@ public class Fairy implements AnimationEntity, ActivityEntity {
             Entity target,
             EventScheduler scheduler)
     {
-        if (Functions.adjacent(this.position, target.getPosition())) {
+        if (Functions.adjacent(super.getPosition(), target.getPosition())) {
             world.removeEntity(target);
             scheduler.unscheduleAllEvents(target);
             return true;
         }
         else {
-            Point nextPos = this.nextPositionFairy(world, target.getPosition());
+            Point nextPos = this.nextPosition(world, target.getPosition());
 
-            if (!this.position.equals(nextPos)) {
+            if (!super.getPosition().equals(nextPos)) {
                 Optional<Entity> occupant = world.getOccupant(nextPos);
                 if (occupant.isPresent()) {
                     scheduler.unscheduleAllEvents(occupant.get());

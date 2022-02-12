@@ -1,37 +1,7 @@
 import processing.core.PImage;
 import java.util.List;
 
-public class Tree implements Plant {
-
-    private String id;
-    private Point position;
-    private List<PImage> images;
-    private int imageIndex;
-    private int actionPeriod;
-    private int animationPeriod;
-    private int health;
-    private int healthLimit;
-
-    public String getId() {
-        return id;
-    }
-
-    public Point getPosition() {
-        return position;
-    }
-
-    public void setPosition(Point position) {
-        this.position = position;
-    }
-
-    public List<PImage> getImages() {
-        return images;
-    }
-
-    public void setHealth(int h)
-    {
-        health = health + h;
-    }
+public class Tree extends Plant {
 
     public Tree(
             String id,
@@ -42,14 +12,7 @@ public class Tree implements Plant {
             int health,
             int healthLimit)
     {
-        this.id = id;
-        this.position = position;
-        this.images = images;
-        this.imageIndex = 0;
-        this.actionPeriod = actionPeriod;
-        this.animationPeriod = animationPeriod;
-        this.health = health;
-        this.healthLimit = healthLimit;
+        super(id, position, images, 0, actionPeriod, animationPeriod, health, healthLimit);
     }
 
     public void executeActivity(
@@ -58,37 +21,12 @@ public class Tree implements Plant {
             EventScheduler scheduler)
     {
 
-        if (!transformPlant(world, scheduler, imageStore)) {
-
+        if (!transformPlant(world, scheduler, imageStore))
+        {
             scheduler.scheduleEvent(this,
                     Factory.createActivityAction(this, world, imageStore),
-                    actionPeriod);
+                    super.getActionPeriod());
         }
-    }
-
-    public void scheduleActions(
-            EventScheduler scheduler,
-            WorldModel world,
-            ImageStore imageStore)
-    {
-                scheduler.scheduleEvent(this,
-                        Factory.createActivityAction(this, world, imageStore),
-                        actionPeriod);
-                scheduler.scheduleEvent(this,
-                        Factory.createAnimationAction(this, 0),
-                        getAnimationPeriod());
-    }
-
-    public PImage getCurrentImage() {
-        return images.get(imageIndex);
-    }
-
-    public int getAnimationPeriod() {
-                return animationPeriod;
-    }
-
-    public void nextImage() {
-        imageIndex = (imageIndex + 1) % images.size();
     }
 
     private boolean transformPlant(
@@ -96,16 +34,15 @@ public class Tree implements Plant {
             EventScheduler scheduler,
             ImageStore imageStore)
     {
-        if (health <= 0) {
-            Entity stump = Factory.createStump(id,
-                    position,
+        if (super.getHealth() <= 0) {
+            Entity stump = Factory.createStump(super.getId(),
+                    super.getPosition(),
                     imageStore.getImageList(Functions.STUMP_KEY));
 
             world.removeEntity(this);
             scheduler.unscheduleAllEvents(this);
 
             world.addEntity(stump);
-            //stump.scheduleActions(scheduler, world, imageStore);
 
             return true;
         }

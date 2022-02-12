@@ -1,4 +1,4 @@
-public class Animation implements Action{
+public class Animation extends Action{
     private AnimationEntity entity;
     private int repeatCount;
 
