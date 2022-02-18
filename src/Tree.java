@@ -9,13 +9,12 @@ public class Tree extends Plant {
             List<PImage> images,
             int actionPeriod,
             int animationPeriod,
-            int health,
-            int healthLimit)
+            int health)
     {
-        super(id, position, images, 0, actionPeriod, animationPeriod, health, healthLimit);
+        super(id, position, images, 0, actionPeriod, animationPeriod, health);
     }
 
-    public void executeActivity(
+    protected void executeActivity(
             WorldModel world,
             ImageStore imageStore,
             EventScheduler scheduler)
@@ -29,11 +28,7 @@ public class Tree extends Plant {
         }
     }
 
-    private boolean transformPlant(
-            WorldModel world,
-            EventScheduler scheduler,
-            ImageStore imageStore)
-    {
+    protected boolean transformPlant(WorldModel world, EventScheduler scheduler, ImageStore imageStore) {
         if (super.getHealth() <= 0) {
             Entity stump = Factory.createStump(super.getId(),
                     super.getPosition(),
@@ -46,7 +41,6 @@ public class Tree extends Plant {
 
             return true;
         }
-
         return false;
     }
 }

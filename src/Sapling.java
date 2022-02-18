@@ -2,6 +2,7 @@ import processing.core.PImage;
 import java.util.List;
 
 public class Sapling extends Plant {
+    private int healthLimit;
 
     public Sapling(
             String id,
@@ -12,10 +13,11 @@ public class Sapling extends Plant {
             int health,
             int healthLimit)
     {
-        super(id, position, images, 0, actionPeriod, animationPeriod, health, healthLimit);
+        super(id, position, images, 0, actionPeriod, animationPeriod, health);
+        this.healthLimit = healthLimit;
     }
 
-    public void executeActivity(
+    protected void executeActivity(
             WorldModel world,
             ImageStore imageStore,
             EventScheduler scheduler)
@@ -29,7 +31,7 @@ public class Sapling extends Plant {
         }
     }
 
-    private boolean transformPlant(
+    protected boolean transformPlant(
             WorldModel world,
             EventScheduler scheduler,
             ImageStore imageStore)
@@ -46,7 +48,7 @@ public class Sapling extends Plant {
 
             return true;
         }
-        else if (super.getHealth() >= super.getHealthLimit())
+        else if (super.getHealth() >= healthLimit)
         {
             Tree tree = Factory.createTree("tree_" + super.getId(),
                     super.getPosition(),

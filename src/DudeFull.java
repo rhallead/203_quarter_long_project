@@ -18,7 +18,7 @@ public class DudeFull extends Dude {
         super(id, position, images, 0, animationPeriod, actionPeriod, resourceLimit);
     }
 
-    public void executeActivity(
+    protected void executeActivity(
             WorldModel world,
             ImageStore imageStore,
             EventScheduler scheduler)
@@ -26,10 +26,10 @@ public class DudeFull extends Dude {
         Optional<Entity> fullTarget =
                 world.findNearest(super.getPosition(), new ArrayList<>(Arrays.asList(House.class)));
 
-        if (fullTarget.isPresent() && this.moveToFull(world,
+        if (fullTarget.isPresent() && this.moveTo(world,
                 fullTarget.get(), scheduler))
         {
-            transformFull(world, scheduler, imageStore);
+            transform(world, scheduler, imageStore);
         }
         else {
             scheduler.scheduleEvent(this,
@@ -38,7 +38,7 @@ public class DudeFull extends Dude {
         }
     }
 
-    private void transformFull(
+    private void transform(
             WorldModel world,
             EventScheduler scheduler,
             ImageStore imageStore)
@@ -56,7 +56,7 @@ public class DudeFull extends Dude {
         miner.scheduleActions(scheduler, world, imageStore);
     }
 
-    private boolean moveToFull(
+    protected boolean moveTo(
             WorldModel world,
             Entity target,
             EventScheduler scheduler)
@@ -65,17 +65,8 @@ public class DudeFull extends Dude {
             return true;
         }
         else {
-            Point nextPos = super.nextPosition(world, target.getPosition());
-
-            if (!super.getPosition().equals(nextPos)) {
-                Optional<Entity> occupant = world.getOccupant(nextPos);
-                if (occupant.isPresent()) {
-                    scheduler.unscheduleAllEvents(occupant.get());
-                }
-
-                world.moveEntity(this, nextPos);
-            }
-            return false;
+            return super.moveTo(world, target, scheduler);
         }
+
     }
 }

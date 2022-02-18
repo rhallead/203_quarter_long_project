@@ -22,7 +22,7 @@ public class DudeNotFull extends Dude {
         this.resourceCount = resourceCount;
     }
 
-    public void executeActivity(
+    protected void executeActivity(
             WorldModel world,
             ImageStore imageStore,
             EventScheduler scheduler)
@@ -30,10 +30,10 @@ public class DudeNotFull extends Dude {
         Optional<Entity> target =
                 world.findNearest(super.getPosition(), new ArrayList<>(Arrays.asList(Tree.class, Sapling.class)));
 
-        if (!target.isPresent() || !this.moveToNotFull(world,
+        if (!target.isPresent() || !this.moveTo(world,
                 (Plant)target.get(),
                 scheduler)
-                || !transformNotFull(world, scheduler, imageStore))
+                || !transform(world, scheduler, imageStore))
         {
             scheduler.scheduleEvent(this,
                     Factory.createActivityAction(this, world, imageStore),
@@ -41,7 +41,7 @@ public class DudeNotFull extends Dude {
         }
     }
 
-    private boolean transformNotFull(
+    private boolean transform(
             WorldModel world,
             EventScheduler scheduler,
             ImageStore imageStore)
@@ -65,7 +65,7 @@ public class DudeNotFull extends Dude {
         return false;
     }
 
-    private boolean moveToNotFull(
+    protected boolean moveTo(
             WorldModel world,
             Plant target,
             EventScheduler scheduler)
@@ -76,17 +76,7 @@ public class DudeNotFull extends Dude {
             return true;
         }
         else {
-            Point nextPos = super.nextPosition(world, target.getPosition());
-
-            if (!super.getPosition().equals(nextPos)) {
-                Optional<Entity> occupant = world.getOccupant(nextPos);
-                if (occupant.isPresent()) {
-                    scheduler.unscheduleAllEvents(occupant.get());
-                }
-
-                world.moveEntity(this, nextPos);
-            }
-            return false;
+            return super.moveTo(world, target, scheduler);
         }
     }
 }

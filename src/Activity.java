@@ -13,7 +13,7 @@ public class Activity extends Action{
         this.world = world;
     }
 
-    public void executeAction(EventScheduler scheduler) {
+    protected void executeAction(EventScheduler scheduler) {
         entity.executeActivity(world, imageStore, scheduler);
     }
 }

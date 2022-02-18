@@ -2,7 +2,7 @@ import processing.core.PImage;
 
 import java.util.List;
 
-public abstract class Dude extends ActivityEntity{
+public abstract class Dude extends People{
     private int resourceLimit;
 
     public Dude(String id,
@@ -22,7 +22,7 @@ public abstract class Dude extends ActivityEntity{
         return resourceLimit;
     }
 
-    public Point nextPosition(
+    protected Point nextPosition(
             WorldModel world, Point destPos)
     {
         int horiz = Integer.signum(destPos.x - super.getPosition().x);

@@ -39,7 +39,7 @@ public class Factory {
             List<PImage> images)
     {
         return new Tree(id, position, images,
-                actionPeriod, animationPeriod, health, 0);
+                actionPeriod, animationPeriod, health);
     }
 
     public static Stump createStump(

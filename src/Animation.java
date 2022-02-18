@@ -10,7 +10,7 @@ public class Animation extends Action{
         this.repeatCount = repeatCount;
     }
 
-    public void executeAction(EventScheduler scheduler) {
+    protected void executeAction(EventScheduler scheduler) {
         entity.nextImage();
 
         if (repeatCount != 1) {

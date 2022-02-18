@@ -5,7 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-public class Fairy extends ActivityEntity {
+public class Fairy extends People {
 
     public Fairy(
             String id,
@@ -17,7 +17,7 @@ public class Fairy extends ActivityEntity {
         super(id, position, images, 0, animationPeriod, actionPeriod);
     }
 
-    public void executeActivity(
+    protected void executeActivity(
             WorldModel world,
             ImageStore imageStore,
             EventScheduler scheduler)
@@ -28,7 +28,7 @@ public class Fairy extends ActivityEntity {
         if (fairyTarget.isPresent()) {
             Point tgtPos = fairyTarget.get().getPosition();
 
-            if (this.moveToFairy(world, fairyTarget.get(), scheduler)) {
+            if (this.moveTo(world, fairyTarget.get(), scheduler)) {
                 Sapling sapling = Factory.createSapling("sapling_" + super.getId(), tgtPos,
                         imageStore.getImageList(Functions.SAPLING_KEY));
 
@@ -42,7 +42,7 @@ public class Fairy extends ActivityEntity {
                 super.getActionPeriod());
     }
 
-    private Point nextPosition(
+    protected Point nextPosition(
             WorldModel world, Point destPos)
     {
         int horiz = Integer.signum(destPos.x - super.getPosition().x);
@@ -60,7 +60,7 @@ public class Fairy extends ActivityEntity {
         return newPos;
     }
 
-    private boolean moveToFairy(
+    protected boolean moveTo(
             WorldModel world,
             Entity target,
             EventScheduler scheduler)
@@ -71,17 +71,7 @@ public class Fairy extends ActivityEntity {
             return true;
         }
         else {
-            Point nextPos = this.nextPosition(world, target.getPosition());
-
-            if (!super.getPosition().equals(nextPos)) {
-                Optional<Entity> occupant = world.getOccupant(nextPos);
-                if (occupant.isPresent()) {
-                    scheduler.unscheduleAllEvents(occupant.get());
-                }
-
-                world.moveEntity(this, nextPos);
-            }
-            return false;
+            return super.moveTo(world, target, scheduler);
         }
     }
 }

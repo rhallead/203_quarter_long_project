@@ -13,7 +13,7 @@ public class Obstacle extends AnimationEntity{
         super(id, position, images, imageIndex, animationPeriod);
     }
 
-    public void scheduleActions(
+    protected void scheduleActions(
             EventScheduler scheduler,
             WorldModel world,
             ImageStore imageStore)

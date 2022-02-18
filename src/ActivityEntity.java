@@ -21,7 +21,7 @@ public abstract class ActivityEntity extends AnimationEntity{
         return actionPeriod;
     }
 
-    public void scheduleActions(
+    protected void scheduleActions(
             EventScheduler scheduler,
             WorldModel world,
             ImageStore imageStore)
