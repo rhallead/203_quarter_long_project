@@ -4,6 +4,7 @@ import java.util.List;
 
 public abstract class AnimationEntity extends Entity{
     private int animationPeriod;
+    private int imageIndex;
 
     public AnimationEntity(String id,
                            Point position,
@@ -11,7 +12,8 @@ public abstract class AnimationEntity extends Entity{
                            int imageIndex,
                            int animationPeriod)
     {
-        super(id, position, images, imageIndex);
+        super(id, position, images);
+        this.imageIndex = imageIndex;
         this.animationPeriod = animationPeriod;
     }
 
@@ -21,4 +23,14 @@ public abstract class AnimationEntity extends Entity{
     }
 
     protected abstract void scheduleActions(EventScheduler scheduler, WorldModel world, ImageStore imageStore);
+
+    public void nextImage()
+    {
+        imageIndex = (imageIndex + 1) % super.getImages().size();
+    }
+
+    public PImage getCurrentImage()
+    {
+        return super.getImages().get(imageIndex);
+    }
 }

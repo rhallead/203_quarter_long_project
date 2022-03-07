@@ -4,6 +4,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.BiPredicate;
+import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.stream.Stream;
 
 public class Fairy extends People {
 
@@ -45,7 +49,21 @@ public class Fairy extends People {
     protected Point nextPosition(
             WorldModel world, Point destPos)
     {
-        int horiz = Integer.signum(destPos.x - super.getPosition().x);
+        PathingStrategy strategy = new SingleStepPathingStrategy();
+        PathingStrategy strategy2 = new AStarPathingStrategy();
+
+        Predicate<Point> canPassThrough = p -> !(world.isOccupied(p));
+        BiPredicate<Point, Point> withinReach = (p1, p2) -> Functions.adjacent(p1, p2);
+        Function<Point, Stream<Point>> potentialNeighbors = PathingStrategy.CARDINAL_NEIGHBORS;
+
+        List<Point> path = strategy2.computePath(super.getPosition(), destPos, canPassThrough, withinReach, potentialNeighbors);
+
+        if (path.size() == 0)
+            return super.getPosition();
+
+        return path.get(0);
+
+        /*int horiz = Integer.signum(destPos.x - super.getPosition().x);
         Point newPos = new Point(super.getPosition().x + horiz, super.getPosition().y);
 
         if (horiz == 0 || world.isOccupied(newPos)) {
@@ -57,7 +75,7 @@ public class Fairy extends People {
             }
         }
 
-        return newPos;
+        return newPos;*/
     }
 
     protected boolean moveTo(

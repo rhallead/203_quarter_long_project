@@ -8,6 +8,6 @@ public class Stump extends Entity{
             Point position,
             List<PImage> images)
     {
-        super(id, position, images, 0);
+        super(id, position, images);
     }
 }

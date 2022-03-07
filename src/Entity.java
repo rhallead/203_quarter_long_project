@@ -5,14 +5,12 @@ public abstract class Entity {
     private String id;
     private Point position;
     private List<PImage> images;
-    private int imageIndex;
 
-    public Entity(String id, Point position, List<PImage> images, int imageIndex)
+    public Entity(String id, Point position, List<PImage> images)
     {
         this.id = id;
         this.position = position;
         this.images = images;
-        this.imageIndex =imageIndex;
     }
 
     public String getId()
@@ -32,16 +30,11 @@ public abstract class Entity {
 
     public PImage getCurrentImage()
     {
-        return images.get(imageIndex);
+        return images.get(0);
     }
 
     public List<PImage> getImages()
     {
         return images;
-    }
-
-    public void nextImage()
-    {
-        imageIndex = (imageIndex + 1) % images.size();
     }
 }
