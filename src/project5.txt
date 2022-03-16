@@ -1,0 +1,23 @@
+1. There are two events in our world that are triggered by clicking the world. The first event is triggered by clicking \
+a block within the rocks background. The second event is triggered by clicking a block in the ocean background.
+
+2. When the first event (clicking the rocks) is triggered, the background is changed to lighter rocks and a portal
+entity that takes up 2 x 2 blocks is summoned. Regular dragons up to four blocks away are transformed into the mobile
+toothless entity. Six different dragon hunters are spawned.
+When the second event (clicking the ocean) is triggered, the background is changed to a darker, poisoned ocean and a ship
+entity that takes up 3 x 4 blocks is summoned. Regular dragons up to seven blocks away are transformed into the mobile
+lightFury entity. Four different dragonHunterLeader entities are spawned.
+
+3. The affected entities, the dragons, do different things depending on what new entity they were transformed into. The
+mobile toothless entity goes around eating (deleting) dragonHunter entities. Once it has eaten one dragonHunter it
+returns to the water similar to how the dudes returned to the house when full, and then after that it resumes activity.
+The mobile lightFury entity goes around eating or deleting dragonHunterLeader entities, and also returns to the water
+after eating one dragonHunterLeader.
+
+4. The new entity is the dragonHunterLeader who goes around capturing dragons in egg form. Once it captures and egg
+and removes it from the world, this entity returns to the ship. It then repeats the cycle until there are no eggs or it
+gets eaten by a lightFury.
+
+5. Emma Kester - created portal drawing, inputted all images, coded clicking from user + radius.
+Regan Hallead - created all people entity drawings, coded DragonHunterLeader, DragonHunter, NightFury, LightFury class with Mira.
+Mira Shlimenzon - created all dragon + background + ship drawings, coded DragonHunterLeader, DragonHunter, NightFury, LightFury class with Regan.
