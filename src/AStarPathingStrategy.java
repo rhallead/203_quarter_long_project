@@ -6,64 +6,72 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 class AStarPathingStrategy
-        implements PathingStrategy
-{
+        implements PathingStrategy {
 
 
-    public List<Point> computePath(Point start, Point end,
-                                   Predicate<Point> canPassThrough,
-                                   BiPredicate<Point, Point> withinReach,
-                                   Function<Point, Stream<Point>> potentialNeighbors)
-    {
-        List<Point> path = new LinkedList<>();
-        PriorityQueue<Node> openList = new PriorityQueue<>(Comparator.comparing(Node :: getF));
-        HashMap openMap = new HashMap();
-        HashMap closedList = new HashMap();
-        Node currNode = new Node(start, null, 0.0, end);
-        openList.add(currNode);
-        openMap.put(currNode.getPos(), currNode);
-        while (openList.size() != 0 && !withinReach.test(currNode.getPos(), end))
-        {
-            currNode = openList.remove();
-            openMap.remove(currNode.getPos());
-            List<Point> neighbors = potentialNeighbors.apply(currNode.getPos()).filter(canPassThrough).filter(p -> !closedList.containsKey(p)).collect(Collectors.toList());
-            for (Point neighbor : neighbors)
-            {
-                Node newNode = new Node(neighbor, currNode, currNode.getG() + 1, end);
-                boolean addIt = true;
-
-                if(openMap.containsKey(newNode.getPos()))
-                {
-                    Node otherNode = ((Node)openMap.get(newNode.getPos()));
-                    if (otherNode.getG() > newNode.getG())
-                    {
-                        openList.remove(otherNode);
-                        openMap.remove(otherNode.getPos());
-                    }
-                    else
-                        addIt = false;
-                }
-
-                if(addIt) {
-                    openList.add(newNode);
-                    openMap.put(newNode.getPos(), newNode);
-                }
+    public List<Point> computePath(Point start, Point end, Predicate<Point> canPassThrough, BiPredicate<Point, Point> withinReach, Function<Point, Stream<Point>> potentialNeighbors) {
+        //know start and end of path
+        List<Point> path = new LinkedList<Point>();
+        //create closed and open list
+        HashMap<Point, ANode> closedList = new HashMap<>();
+        HashMap<Point, ANode> openList = new HashMap<>();
+        PriorityQueue<ANode> queue = new PriorityQueue<>((node1, node2) -> {
+            if (node1.getF() < node2.getF()) return -1;
+            if (node1.getF() > node2.getF()) return 1;
+            return 0;
+        });
+       //add start node to open list and mark it as current node
+        ANode current = new ANode(start.x, start.y, null, 0, end);
+        openList.put(start, current);
+        queue.add(current);
+        while (!openList.isEmpty()) {
+            // analyze adjacent nodes if valid and are not on closed list
+            Stream<Point> neighbors = potentialNeighbors.apply(current.getPoint()).filter(canPassThrough).filter(p -> !closedList.containsKey(p));
+            List<Point> points = neighbors.collect(Collectors.toList());
+            ArrayList<ANode> node = new ArrayList<>();
+            // creating list of valid adjacent not on closed list nodes
+            for (Point p : points) {
+                node.add(new ANode(p.x, p.y, current, current.getG() + 1, end));
             }
-            closedList.put(currNode.getPos(), currNode);
-        }
+            // for looping through each valid neighbor
+            for (ANode n : node) {
+                 // Check if point already in openList
+                Point nodePoint = n.getPoint();
+                if (openList.containsKey(nodePoint)) {
+                    //if point is in openList then check if new g value better than previous g value
+                    ANode openNode = openList.get(nodePoint);
+                    if(n.getG() > openNode.getG()) {
+                        openList.remove(nodePoint);
+                        queue.remove(n);
+                        // if better get rid of old node
+                    }
+                    else {
+                        // if old node has better g value go get next node
+                        continue;
+                    }
+                }
+                openList.put(n.getPoint(), n);
+                queue.add(n);
+            }
+            openList.remove(current.getPoint());
+            queue.remove(current);
 
-        while(currNode.getPriorNode() != null)
-        {
-            path.add(0, currNode.getPos());
-            currNode = currNode.getPriorNode();
+            closedList.put(current.getPoint(), current);
+
+            current = queue.peek();
+            // open list get node with smallest f value and make it current node
+            // current = openList.values().stream().min(Comparator.comparing(ANode::getF)).orElse(null);
+            if(current == null) return path;
+            if (withinReach.test(current.getPoint(), end)){ break; }
+
+        }
+        if(current.getH() <= 1) {
+            while (current.getPrev() != null && !current.getPoint().equals(start)) {
+                path.add(0, current.getPoint());
+                current = current.getPrev();
+            }
         }
 
         return path;
     }
 }
-
-//Stream<Point> neighbors = potentialNeighbors.apply(currNode.)
-// recurse through prior nodes if you got a solution
-// will give you a path and take the first step and then compute
-// if breaking when hit space bar
-// need to check if problem is in computePath or whatever is calling computePath

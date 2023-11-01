@@ -11,10 +11,6 @@ public final class WorldView
     private int tileHeight;
     private Viewport viewport;
 
-    public Viewport getViewport() {
-        return viewport;
-    }
-
     public WorldView(
             int numRows,
             int numCols,
@@ -30,13 +26,22 @@ public final class WorldView
         this.viewport = new Viewport(numRows, numCols);
     }
 
-    public void shiftView(int colDelta, int rowDelta) {
-        int newCol = Functions.clamp(this.viewport.getCol() + colDelta, 0,
-                this.world.getNumCols() - this.viewport.getNumCols());
-        int newRow = Functions.clamp(this.viewport.getRow() + rowDelta, 0,
-                this.world.getNumRows() - this.viewport.getNumRows());
+    public Viewport getViewport() {
+        return viewport;
+    }
 
-        this.viewport.shift(newCol, newRow);
+    public void shiftView( int colDelta, int rowDelta) {
+        int newCol = clamp(viewport.getCol() + colDelta, 0,
+                world.getNumCols() - viewport.getNumCols());
+        int newRow = clamp(viewport.getRow() + rowDelta, 0,
+                world.getNumRows() - viewport.getNumRows());
+
+        viewport.shift(newCol, newRow);
+    }
+
+    private int clamp(int value, int low, int high) {
+
+        return Math.min(high, Math.max(value, low));
     }
 
     public void drawViewport() {
@@ -57,17 +62,20 @@ public final class WorldView
         }
     }
 
-    private void drawBackground() {
+    public void drawBackground() {
         for (int row = 0; row < viewport.getNumRows(); row++) {
             for (int col = 0; col < viewport.getNumCols(); col++) {
                 Point worldPoint = viewport.viewportToWorld(col, row);
                 Optional<PImage> image =
                         world.getBackgroundImage(worldPoint);
                 if (image.isPresent()) {
-                    screen.image(image.get(), col * tileWidth,
+                   screen.image(image.get(), col * tileWidth,
                             row * tileHeight);
                 }
             }
         }
     }
+
+
+
 }

@@ -1,6 +1,5 @@
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.PrintStream;
 import java.util.Scanner;
 import java.util.Optional;
 
@@ -37,12 +36,12 @@ public final class VirtualWorld extends PApplet
 
     public static double timeScale = 1.0;
 
-    public ImageStore imageStore;
-    public WorldModel world;
-    public WorldView view;
-    public EventScheduler scheduler;
+    private ImageStore imageStore;
+    private WorldModel world;
+    private WorldView view;
+    private EventScheduler scheduler;
 
-    public long nextTime;
+    private long nextTime;
 
     public void settings() {
         size(VIEW_WIDTH, VIEW_HEIGHT);
@@ -88,16 +87,19 @@ public final class VirtualWorld extends PApplet
         if (entityOptional.isPresent())
         {
             Entity entity = entityOptional.get();
-            System.out.println(entity.getId() + ": " + entity.getClass());
+            if(entity instanceof PlantEntity)
+                System.out.println(entity.getId() + ": " + ((PlantEntity)entity).getHealth());
+            else
+                System.out.println(entity.getId());
+
         }
 
     }
 
     private Point mouseToPoint(int x, int y)
     {
-        return view.getViewport().viewportToWorld(mouseX/TILE_WIDTH, mouseY/TILE_HEIGHT);
+        return view.getViewport().viewportToWorld( mouseX/TILE_WIDTH, mouseY/TILE_HEIGHT);
     }
-
     public void keyPressed() {
         if (key == CODED) {
             int dx = 0;
@@ -136,7 +138,7 @@ public final class VirtualWorld extends PApplet
         return img;
     }
 
-    static void loadImages(
+    public static void loadImages(
             String filename, ImageStore imageStore, PApplet screen)
     {
         try {
@@ -164,8 +166,8 @@ public final class VirtualWorld extends PApplet
             WorldModel world, EventScheduler scheduler, ImageStore imageStore)
     {
         for (Entity entity : world.getEntities()) {
-            if(entity instanceof AnimationEntity)
-                ((AnimationEntity)entity).scheduleActions(scheduler, world, imageStore);
+            if (entity instanceof AnimationEntity)
+                ((AnimationEntity) entity).scheduleActions(scheduler, world, imageStore);
         }
     }
 

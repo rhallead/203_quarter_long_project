@@ -1,19 +1,15 @@
-public class Activity extends Action{
-    private ActivityEntity entity;
+public class Activity implements Action {
     private WorldModel world;
     private ImageStore imageStore;
+    private ActivityEntity entity;
 
-    public Activity(
-            ActivityEntity entity,
-            WorldModel world,
-            ImageStore imageStore)
-    {
+    public Activity(ActivityEntity entity, WorldModel world, ImageStore imageStore) {
         this.entity = entity;
-        this.imageStore = imageStore;
         this.world = world;
+        this.imageStore = imageStore;
     }
 
-    protected void executeAction(EventScheduler scheduler) {
-        entity.executeActivity(world, imageStore, scheduler);
+    public void executeAction(EventScheduler scheduler) {
+        entity.executeActivity(scheduler, world, imageStore);
     }
 }

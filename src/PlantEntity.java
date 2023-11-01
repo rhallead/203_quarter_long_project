@@ -1,17 +1,19 @@
 import processing.core.PImage;
 
-import java.util.*;
+import java.util.List;
 
-/**
- * An entity that exists in the world. See EntityKind for the
- * different kinds of entities that exist.
- */
-public final class Tree extends PlantEntity {
+public abstract class PlantEntity extends ActivityEntity {
+    private int health;
 
-    public Tree(String id, Point position, List<PImage> images, int imageIndex, int animationPeriod, int actionPeriod, int health) {
-        super(id, position, images, imageIndex, animationPeriod, actionPeriod, health);
+    public PlantEntity(String id, Point position, List<PImage> images, int imageIndex, int animationPeriod, int actionPeriod, int health) {
+        super(id, position, images, imageIndex, animationPeriod, actionPeriod);
+        this.health = health;
     }
 
+    public int getHealth() {
+        return health;
+    }
+    public void setHealth(int increment) { this.health += increment; }
     protected void executeActivity(EventScheduler scheduler, WorldModel world, ImageStore imageStore) {
         if (!transformPlant(world, scheduler, imageStore)) {
 
@@ -34,5 +36,4 @@ public final class Tree extends PlantEntity {
 
         return false;
     }
-
 }

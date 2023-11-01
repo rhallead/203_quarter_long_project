@@ -1,16 +1,15 @@
-public class Animation extends Action{
-    private AnimationEntity entity;
+public class Animation implements Action {
     private int repeatCount;
+    private AnimationEntity entity;
 
-    public Animation(
-            AnimationEntity entity,
-            int repeatCount)
+    public Animation(AnimationEntity entity, int repeatCount)
     {
-        this.entity = entity;
-        this.repeatCount = repeatCount;
+       this.entity = entity;
+       this.repeatCount = repeatCount;
     }
 
-    protected void executeAction(EventScheduler scheduler) {
+    public void executeAction(EventScheduler scheduler)
+    {
         entity.nextImage();
 
         if (repeatCount != 1) {

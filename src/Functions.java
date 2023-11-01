@@ -24,8 +24,7 @@ public final class Functions
             "dirt_bot_left_corner", "dirt_bot_right_up", "dirt_vert_left_bot"));
 
     public static final String SAPLING_KEY = "sapling";
-    //public static final int SAPLING_HEALTH_LIMIT = 5;
-    //public static final int SAPLING_ACTION_ANIMATION_PERIOD = 1000; // have to be in sync since grows and gains health at same time
+
     public static final int SAPLING_NUM_PROPERTIES = 4;
     public static final int SAPLING_ID = 1;
     public static final int SAPLING_COL = 2;
@@ -86,19 +85,7 @@ public final class Functions
     public static final int TREE_HEALTH_MAX = 3;
     public static final int TREE_HEALTH_MIN = 1;
 
-    public static boolean adjacent(Point p1, Point p2) {
-        return (p1.x == p2.x && Math.abs(p1.y - p2.y) == 1) || (p1.y == p2.y
-                && Math.abs(p1.x - p2.x) == 1);
-    }
-
-    public static int getNumFromRange(int max, int min)
-    {
-        Random rand = new Random();
-        return min + rand.nextInt(
-                max
-                        - min);
-    }
-
+    // keep here
     public static void loadImages(
             Scanner in, ImageStore imageStore, PApplet screen)
     {
@@ -236,7 +223,8 @@ public final class Functions
             Point pt = new Point(Integer.parseInt(properties[SAPLING_COL]),
                     Integer.parseInt(properties[SAPLING_ROW]));
             String id = properties[SAPLING_ID];
-            Entity entity = Factory.createSapling(id, pt, imageStore.getImageList(SAPLING_KEY));
+            int health = Integer.parseInt(properties[SAPLING_HEALTH]);
+            Sapling entity =Factory.createSapling(id, pt, imageStore.getImageList(SAPLING_KEY));
             world.tryAddEntity(entity);
         }
 
@@ -249,7 +237,7 @@ public final class Functions
         if (properties.length == DUDE_NUM_PROPERTIES) {
             Point pt = new Point(Integer.parseInt(properties[DUDE_COL]),
                     Integer.parseInt(properties[DUDE_ROW]));
-            Entity entity = Factory.createDudeNotFull(properties[DUDE_ID],
+            Dude_Not_Full entity = Factory.createDudeNotFull(properties[DUDE_ID],
                     pt,
                     Integer.parseInt(properties[DUDE_ACTION_PERIOD]),
                     Integer.parseInt(properties[DUDE_ANIMATION_PERIOD]),
@@ -267,7 +255,7 @@ public final class Functions
         if (properties.length == FAIRY_NUM_PROPERTIES) {
             Point pt = new Point(Integer.parseInt(properties[FAIRY_COL]),
                     Integer.parseInt(properties[FAIRY_ROW]));
-            Entity entity = Factory.createFairy(properties[FAIRY_ID],
+            Fairy entity = Factory.createFairy(properties[FAIRY_ID],
                     pt,
                     Integer.parseInt(properties[FAIRY_ACTION_PERIOD]),
                     Integer.parseInt(properties[FAIRY_ANIMATION_PERIOD]),
@@ -284,12 +272,12 @@ public final class Functions
         if (properties.length == TREE_NUM_PROPERTIES) {
             Point pt = new Point(Integer.parseInt(properties[TREE_COL]),
                     Integer.parseInt(properties[TREE_ROW]));
-            Entity entity = Factory.createTree(properties[TREE_ID],
+            Tree entity = Factory.createTree(properties[TREE_ID],
                                         pt,
                                         Integer.parseInt(properties[TREE_ACTION_PERIOD]),
                                         Integer.parseInt(properties[TREE_ANIMATION_PERIOD]),
                                          Integer.parseInt(properties[TREE_HEALTH]),
-                    imageStore.getImageList(TREE_KEY));
+                                        imageStore.getImageList(TREE_KEY));
             world.tryAddEntity(entity);
         }
 
@@ -302,10 +290,9 @@ public final class Functions
         if (properties.length == OBSTACLE_NUM_PROPERTIES) {
             Point pt = new Point(Integer.parseInt(properties[OBSTACLE_COL]),
                                  Integer.parseInt(properties[OBSTACLE_ROW]));
-            Entity entity = Factory.createObstacle(properties[OBSTACLE_ID], pt,
+            Obstacle entity = Factory.createObstacle(properties[OBSTACLE_ID], pt,
                     Integer.parseInt(properties[OBSTACLE_ANIMATION_PERIOD]),
-                    imageStore.getImageList(
-                                                        OBSTACLE_KEY));
+                                           imageStore.getImageList(OBSTACLE_KEY));
             world.tryAddEntity(entity);
         }
 
@@ -318,9 +305,8 @@ public final class Functions
         if (properties.length == HOUSE_NUM_PROPERTIES) {
             Point pt = new Point(Integer.parseInt(properties[HOUSE_COL]),
                                  Integer.parseInt(properties[HOUSE_ROW]));
-            Entity entity = Factory.createHouse(properties[HOUSE_ID], pt,
-                    imageStore.getImageList(
-                                                          HOUSE_KEY));
+            House entity = Factory.createHouse(properties[HOUSE_ID], pt,
+                                             imageStore.getImageList(HOUSE_KEY));
             world.tryAddEntity(entity);
         }
 
@@ -356,26 +342,4 @@ public final class Functions
 
         return deltaX * deltaX + deltaY * deltaY;
     }
-
-    /* public static Optional<Entity> findNearest(
-            WorldModel world, Point pos, List<EntityKind> kinds)
-    {
-        List<Entity> ofType = new LinkedList<>();
-        for (EntityKind kind: kinds)
-        {
-            for (Entity entity : world.entities) {
-                if (entity.kind == kind) {
-                    ofType.add(entity);
-                }
-            }
-        }
-
-        return nearestEntity(ofType, pos);
-    }*/
-
-    public static int clamp(int value, int low, int high) {
-        return Math.min(high, Math.max(value, low));
-    }
-
-
 }
